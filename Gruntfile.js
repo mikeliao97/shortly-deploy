@@ -23,8 +23,7 @@ module.exports = function(grunt) {
       your_target: {
         options: {
           url: 'ssh://root@107.170.192.75/var/newRepo2',
-          branch: 'master',
-          force: true
+          branch: 'master'          
         },
         src: '../shortly-deploy'
       }
@@ -78,7 +77,18 @@ module.exports = function(grunt) {
     shell: {
       prodServer: {
       }
-    }
+    },
+    
+    gitpush: {
+      your_target: {
+        options: {
+          // Target-specific options go here.
+          remote: 'live',
+          branch: 'master',          
+        }
+      }
+    },
+
   });
 
   grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -86,7 +96,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-eslint');
-  grunt.loadNpmTasks('grunt-git-deploy');
+  grunt.loadNpmTasks('grunt-git');
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-shell');
   grunt.loadNpmTasks('grunt-nodemon');
@@ -119,7 +129,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('deploy', function(n) {
     if (grunt.option('prod')) {
-      grunt.task.run(['eslint', 'test', 'concat', 'uglify', 'cssmin', 'git_deploy', 'server-dev']);
+      grunt.task.run(['eslint', 'test', 'concat', 'uglify', 'cssmin', 'gitpush']);
     } else { //development
       grunt.task.run(['eslint', 'test', 'concat', 'uglify', 'cssmin', 'server-dev']);
     }    
